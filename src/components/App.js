@@ -34,13 +34,17 @@ class App extends Component {
   return;
 }
 const relations = ["Friends", "Love", "Affection", "Marriage", "Enemy", "Siblings"];
-let index = 0;
+// let index = 0;
 
-while (relations.length > 1) {
-  index = (index + count - 1) % relations.length;
-  relations.splice(index, 1);
-}
-this.setState({ output: relations[0] });
+// while (relations.length > 1) {
+//   index = (index + count - 1) % relations.length;
+//   relations.splice(index, 1);
+// }
+// this.setState({ output: relations[0] });
+ const ans=relations[(count%relations.length)-1]
+
+
+this.setState({ output: ans });
 
 
 
