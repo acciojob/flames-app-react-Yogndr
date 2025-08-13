@@ -1,80 +1,91 @@
-import React, {Component} from "react";
-import '../styles/App.css';
+import React, { useState } from "react";
+import "./../styles/App.css";
 
-class App extends Component {
-    state={
-            name1:"",
-            name2:"",
-            output:""
-        }
+function App() {
+  const [name1, setName1] = useState("");
+  const [name2, setName2] = useState("");
+  const [result, setResult] = useState("");
 
-         handleChange=(e)=>{
-            this.setState({[e.target.name]:e.target.value})
-                
-            
+  const flamesMap = {
+    1: "Friends",
+    2: "Love",
+    3: "Affection",
+    4: "Marriage",
+    5: "Enemy",
+    0: "Siblings"
+  };
 
-        }
+  const removeCommonChars = (str1, str2) => {
+    let arr1 = str1.split("");
+    let arr2 = str2.split("");
 
-         findRelationshipStatus=()=>{
-            let { name1, name2 } = this.state;
-            name1 = name1.replace(/\s+/g, "").toLowerCase();
-            name2 = name2.replace(/\s+/g, "").toLowerCase();
-            let arr1 = name1.split("");
-            let arr2 = name2.split("");
-            arr1.forEach((char) => {
-            const index = arr2.indexOf(char);
-           if (index !== -1) {
-            arr2.splice(index, 1);
-           arr1.splice(arr1.indexOf(char), 1);
-            }
-            });
-            const count = arr1.length + arr2.length;
-            
+    arr1.forEach((char, i) => {
+      const matchIndex = arr2.indexOf(char);
+      if (matchIndex !== -1) {
+        arr1[i] = ""; 
+        arr2[matchIndex] = ""; 
+      }
+    });
 
-const relations = ["Siblings" , "Friends", "Love", "Affection", "Marriage", "Enemy"];
-let index = 0;
+    const remaining1 = arr1.filter((c) => c !== "").join("");
+    const remaining2 = arr2.filter((c) => c !== "").join("");
+    return [remaining1, remaining2];
+  };
 
-// console.log("This should be somethnig",relations[-1]);
-
-// while (relations.length > 1) {
-//   index = (index + count - 1) % relations.length;
-//   relations.splice(index, 1);
-// }
-// this.setState({ output: relations[0] });
- const ans=relations[count%relations.length]
-
-
-this.setState({ output: ans });
-
-
-
-
-            
-        }
-
-         clearFields=()=>{
-            this.setState({
-                name1:"",
-                name2:"",
-                output:""
-            })
-
-        }
-
-    render() {
-        
-        return(
-            <div id="main">
-                
-                <input type="text" data-testid="input1" name="name1" placeholder="Enter first name" value={this.state.name1} onChange={this.handleChange} required/>
-                <input type="text" data-testid="input2" name="name2" placeholder="Enter second name" value={this.state.name2} onChange={this.handleChange} required/>
-                <button onClick={this.findRelationshipStatus} data-testid="calculate_relationship" name="calculate_relationship">Calculate Relationship Future</button>
-                <button onClick={this.clearFields} data-testid="clear" name="clear">Clear</button>
-                <h3 data-testid="answer">{this.state.output}</h3>
-            </div>
-        )
+  const handleCalculate = () => {
+    if (name1.trim() === "" || name2.trim() === "") {
+      setResult("Please Enter valid input");
+      return;
     }
+
+    const [rem1, rem2] = removeCommonChars(name1, name2);
+    const totalLength = rem1.length + rem2.length;
+
+    const modValue = totalLength % 6;
+    setResult(flamesMap[modValue]);
+  };
+
+  const handleClear = () => {
+    setName1("");
+    setName2("");
+    setResult("");
+  };
+
+  return (
+    <div id="main">
+      <input
+        data-testid="input1"
+        name="name1"
+        value={name1}
+        onChange={(e) => setName1(e.target.value)}
+      />
+      <input
+        data-testid="input2"
+        name="name2"
+        value={name2}
+        onChange={(e) => setName2(e.target.value)}
+      />
+      <button
+        data-testid="calculate_relationship"
+        name="calculate_relationship"
+        onClick={handleCalculate}
+      >
+        Calculate Relationship Future
+      </button>
+      <button
+        data-testid="clear"
+        name="clear"
+        onClick={handleClear}
+      >
+        Clear
+      </button>
+      <h3 data-testid="answer">{result}</h3>
+    </div>
+  );
+
 }
+
+export default App;
 
 
 export default App;
