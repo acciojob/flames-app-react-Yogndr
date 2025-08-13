@@ -31,7 +31,7 @@ class App extends Component {
             const count = arr1.length + arr2.length;
             
 
-const relations = ["Friends", "Love", "Affection", "Marriage", "Enemy", "Siblings"];
+const relations = ["Siblings" , "Friends", "Love", "Affection", "Marriage", "Enemy"];
 let index = 0;
 
 // console.log("This should be somethnig",relations[-1]);
