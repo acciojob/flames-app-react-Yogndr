@@ -41,7 +41,7 @@ let index = 0;
 //   relations.splice(index, 1);
 // }
 // this.setState({ output: relations[0] });
- const ans=relations[(count%relations.length)-1]
+ const ans=relations[count%relations.length]
 
 
 this.setState({ output: ans });
